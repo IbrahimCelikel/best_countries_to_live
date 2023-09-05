@@ -9,7 +9,7 @@ Provide candidate cities and countries to relocate.
 # Finding Data
 Required data is collected from various sources by copying and pasting to CSV files(There was only one table on each website). Web scraping will be used later.
 
-# Preparing Data With MySQL
+# Preparing Data with MySQL
 Create a database.
 ```
 CREATE DATABASE countryForFreelanceRemote
@@ -19,7 +19,8 @@ CREATE DATABASE countryForFreelanceRemote
 
 <br>Create the main table.
 ```
-CREATE TABLE countries (
+CREATE TABLE countries
+    (
 	city varchar(255),
 	states varchar(255),
     country varchar(255),
@@ -29,7 +30,8 @@ CREATE TABLE countries (
     internet_mbps double,
     pollution_index double,
     safety_index double,
-    taxes double);
+    taxes double
+    );
 ```
 ```
 ALTER TABLE countryforfreelanceremote.countries
