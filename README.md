@@ -20,9 +20,8 @@ CREATE DATABASE countryForFreelanceRemote
 <br>Create the main table.
 ```
 CREATE TABLE countries
-    (
-	city varchar(255),
-	states varchar(255),
+    (city varchar(255),
+    states varchar(255),
     country varchar(255),
     cost_of_living double,
     cost_of_rent double,
