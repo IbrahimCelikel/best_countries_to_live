@@ -111,7 +111,7 @@ SET
     city = TRIM(`city`), 
     states = TRIM(`states`), 
     country = TRIM(`country`);
-    ```
+```
 
 <br>Drop a.
 ```
@@ -151,7 +151,7 @@ INNER JOIN
 ON c.country = i.Country
 SET
 	c.internet_mbps = i.`Mbps`;
-    ```
+```
 
 <br>Update taxes of the main table on city.
 ```
@@ -205,7 +205,7 @@ INNER JOIN
 ON c.country = t.Country
 SET
 	c.corporate_taxes = t.`Corporate Tax`;
-    ```
+```
 
 <br>Dropped tables.
 
@@ -221,7 +221,7 @@ WHERE
 
 ALTER TABLE countryforfreelanceremote.countries
 DROP COLUMN taxes;
-    ```
+```
 
 # Finding More Data
 Collected more data.
@@ -252,7 +252,7 @@ ADD COLUMN(
     pisa double,
     public_social_exp_as_gdp double
     );
-    ```
+```
 
 <br>Update corruption of the main table on country.
 ```
@@ -263,7 +263,7 @@ UPDATE countryforfreelanceremote.countries as c
 INNER JOIN countryforfreelanceremote.corruption as cr
 ON c.country = cr.Country
 SET c.corruption = cr.corruption
-    ```
+```
 
 <br>Update economic_complexty of the main table on country.
 ```
@@ -282,7 +282,7 @@ UPDATE countryforfreelanceremote.countries as c
 INNER JOIN countryforfreelanceremote.`country complexity rankings 2021` as ec
 ON c.country = ec.`ï»¿Country`
 SET c.economic_complexity = ec.ECI
-    ```
+```
 
 <br>Update democracy and liberal_democracy fields of the main table on country.
 ```
@@ -302,7 +302,7 @@ UPDATE countryforfreelanceremote.countries as c
 INNER JOIN countryforfreelanceremote.`democracy` as d
 ON c.country = d.`MyUnknownColumn`
 SET c.liberal_democracy = d.`liberal democracy`;
-    ```
+```
 
 <br>Update entrepreneurship related fields of main table on country
 ```
@@ -338,7 +338,7 @@ UPDATE countryforfreelanceremote.countries as c
 INNER JOIN countryforfreelanceremote.entrepreneurship as e
 ON c.country = e.MyUnknownColumn
 SET c.openness_for_business = e.`openness for business`;
-    ```
+```
 
 <br>Update gdp_per_capita of main table on country.
 ```
@@ -361,7 +361,7 @@ UPDATE countryforfreelanceremote.countries as c
 INNER JOIN countryforfreelanceremote.gdp_per_capita as g
 ON c.country = g.country
 SET c.gdp_per_capita = g.`gdp_per_capita`;
-    ```
+```
 
 <br>Update entrepreneurship related fields of main table on country
 ```
@@ -372,7 +372,7 @@ UPDATE countryforfreelanceremote.countries as c
 INNER JOIN countryforfreelanceremote.gender_inequality as g
 ON c.country = g.country
 SET c.gender_inequality = g.`gii`;
-    ```
+```
 
 <br>Update gini of main table on country.
 ```
@@ -383,7 +383,7 @@ UPDATE countryforfreelanceremote.countries as c
 INNER JOIN countryforfreelanceremote.gini as g
 ON c.country = g.country
 SET c.gini = g.`gini`;
-    ```
+```
 
 <br>Update iq of main table on country.
 ```
@@ -394,7 +394,7 @@ UPDATE countryforfreelanceremote.countries as c
 INNER JOIN countryforfreelanceremote.iq as g
 ON c.country = g.country
 SET c.iq = g.`IQ`;
-    ```
+```
 
 <br>Update media of main table on country.
 ```
@@ -405,7 +405,7 @@ UPDATE countryforfreelanceremote.countries as c
 INNER JOIN countryforfreelanceremote.media as g
 ON c.country = g.country
 SET c.press_freedom = g.`press`;
-    ```
+```
 
 <br>Update pisa of main table on country.
 ```
@@ -416,7 +416,7 @@ UPDATE countryforfreelanceremote.countries as c
 INNER JOIN countryforfreelanceremote.pisa as g
 ON c.country = g.country
 SET c.pisa = g.`PISA`;
-    ```
+```
 
 <br>Update social_exp_gdp of main table on country.
 ```
@@ -427,7 +427,7 @@ UPDATE countryforfreelanceremote.countries as c
 INNER JOIN countryforfreelanceremote.social_exp as g
 ON c.country = g.country
 SET c.public_social_exp_as_gdp = g.`public_social_expenditure_as_gdp`;
-    ```
+```
 
 <br>Some corrections.
 ```
@@ -446,7 +446,7 @@ WHERE country = 'United Kingdom'
 UPDATE countryforfreelanceremote.countries
 SET press_freedom = '71.22'
 WHERE country = 'United States'
-    ```
+```
 
 # Collecting More Data
 Collected innovation, competitiveness and human capital indexes.
@@ -464,7 +464,7 @@ DROP COLUMN labour_skills,
 DROP COLUMN infrastructure, 
 DROP COLUMN access_to_capital, 
 DROP COLUMN openness_for_business;
-    ```
+```
 
 <br>Add columns.
 ```
@@ -472,7 +472,7 @@ ALTER TABLE countryforfreelanceremote.countries
 ADD COLUMN innovation double,
 ADD COLUMN`competitiveness` double,
 ADD COLUMN `human_capital` double;
-    ```
+```
 
 <br>Update competitiveness of main table on country.
 ```
@@ -487,7 +487,7 @@ UPDATE countryforfreelanceremote.countries as c
 INNER JOIN countryforfreelanceremote.competitiveness as g
 ON c.country = g.country
 SET c.competitiveness = g.`competitiveness`;
-    ```
+```
 
 <br>Update innovation of main table on country.
 ```
@@ -502,7 +502,7 @@ UPDATE countryforfreelanceremote.countries as c
 INNER JOIN countryforfreelanceremote.innovation as g
 ON c.country = g.country
 SET c.innovation = g.`innovation`;
-    ```
+```
 
 <br>Update human_capital of main table on country.
 ```
@@ -516,7 +516,7 @@ UPDATE countryforfreelanceremote.countries as c
 INNER JOIN countryforfreelanceremote.human_capital as g
 ON c.country = g.country
 SET c.human_capital = g.`potential_reached`;
-    ```
+```
 
 <br>Drop tables.
 
@@ -525,7 +525,7 @@ SET c.human_capital = g.`potential_reached`;
 UPDATE countryforfreelanceremote.countries
 SET innovation = '59.7'
 WHERE country = 'United Kingdom'
-    ```
+```
 
 <br>gini*gpd_per_capita.
 ```
@@ -534,7 +534,7 @@ ADD COLUMN giniXgdp_per_capita double
 
 UPDATE countryforfreelanceremote.countries
 SET giniXgdp_per_capita = `public_social_exp_as_gdp` / `gini`
-    ```
+```
 
 <br>Exported data before deleting null rows(some countries will be deleted).
 
@@ -557,14 +557,14 @@ WHERE
     competitiveness IS null OR 
     human_capital IS null OR 
     giniXgdp_per_capita IS null;
-    ```
+```
 
 # Web Scraping
 Create scrapyproject.
 ```
 scrapy startproject citiestolive
 scrapy genspider citiespider https://www.numbeo.com/cost-of-living/
-    ```
+```
 
 <br>Added ipython shell to scrapy.cfg
 
@@ -609,7 +609,7 @@ class CitiespiderSpider(scrapy.Spider):
         writer.writerow([city_name, country_name, cost_of_living, safety, health_care, pollution])
         
         file.close()
-    ```
+```
 
 # Data Analysis With Excel
 Added scraped new cities to main data.
