@@ -617,7 +617,7 @@ Exported data from MySQL.
 <br>Added to the analysis file.
 <br>Text to columns.
 <br>Added scraped new cities to the analysis file.
-<br> Some cleaning with excel.
+<br> Some cleaning with Excel for the scraped data.
 ```
 Replace all "[' Quality of Life in " with ""
 Replace all "']" with ""
@@ -626,13 +626,50 @@ Text to columns
 =IF(LEN(C1)<3,C1,"")    to separate states from countries    
 Added headers
 ```
-Added to main table.
-<br>Freeze Panes.
+Filled missing columns of the scraped data with the existing data(Country to country match).
+```
+=XLOOKUP([@Country],Table1[Country],Table1[Personal Income Taxes])
+=XLOOKUP([@Country],Table1[Country],Table1[Sales Taxes])
+=XLOOKUP([@Country],Table1[Country],Table1[Corporate Taxes])
+=XLOOKUP([@Country],Table1[Country],Table1[Corruption])
+=XLOOKUP([@Country],Table1[Country],Table1[Economic Complexity])
+=XLOOKUP([@Country],Table1[Country],Table1[Democracy])
+=XLOOKUP([@Country],Table1[Country],Table1[Liberal Democracy])
+=XLOOKUP([@Country],Table1[Country],Table1[Gender Inequality])
+=XLOOKUP([@Country],Table1[Country],Table1[IQ])
+=XLOOKUP([@Country],Table1[Country],Table1[Press Freedom])
+=XLOOKUP([@Country],Table1[Country],Table1[Pisa])
+=XLOOKUP([@Country],Table1[Country],Table1[Public Social Expenditure as GDP])
+=XLOOKUP([@Country],Table1[Country],Table1[Innovation])
+=XLOOKUP([@Country],Table1[Country],Table1[Human Capital])
+=XLOOKUP([@Country],Table1[Country],Table1[Gini Coefficient * GDP Per Capita])
+```
+Copied and pasted the entire table as a value to delete formulas.
+<br>Deleted cities with missing data(their countries were already deleted).
+<br>Added to main sheet.
+<br>Deleted dublicates.
 
 # Data Analysis With Excel
-Calculated benefits with by multiplying 0 to 100 ones and by dividing 100 to 0 ones.
-<br>Summed costs and taxes.
-<br>Calculated Benefits/costs and taxes.
+Since they were not helpful, internet speed, GDP per capita, Gini coefficient, and competitiveness data is deleted.
+<br> Rearranged every criterion from 0 to 100.
+```
+=([@Column1]-MIN([Column1]))/(MAX([Column1])-MIN([Column1]))*100
+Copy pasted as a value
+Old data is deleted
+
+=(MAX([Column1])-[@Column1])/(MAX([Column1])-MIN([Column1]))*100
+Copy pasted as a value
+Old data is deleted
+
+Used these two formulas for every column.After creating a new column, cut the old column's name, which becomes column1.
+```
+Calculated Cons by summing taxes and costs.
+<br>Calculated with summing everything - cons.
+<br>Calculated pros*cons.
+<br>Rearranged them from 0 to 100
+
+# Visualization with Power BI
+Created Cards, slicers for cities and countries, one table with every column, and bar charts for pros, cons, and pros and cons.
 
 # Results
-Cities from Denmark and Finland will be analyzed in detail.
+Cities from Denmark, Finland, Sweden, Norway, Holland, Switzerland, and Germany will be analyzed in detail.
