@@ -1,25 +1,25 @@
 # Project Description and Personal Preferences
 Provide candidate cities and countries to relocate.
-<br>Final decision will be given after researching candidate cities and countries in detail.
+<br>The Final decision will be given after researching candidate cities and countries in detail.
 <br>Social states, not low-tax, high-risk return countries.
 <br>High IQ average, excellent education system.
 <br>Strong institutions and other general things(democracy, media, etc.).
 <br>Suitable for working remotely and entrepreneurs.
 
 # Finding Data
-Required data was not ready in one place. Data is collected from various sources by copying and pasting to CSV files. Web scraping will be used later.
+Required data is collected from various sources by copying and pasting to CSV files(There was only one table on each website). Web scraping will be used later.
 
 # Preparing Data With MySQL
 Create a database.
 ```
-create database countryForFreelanceRemote
+CREATE DATABASE countryForFreelanceRemote
 ```
 
 <br>Imported csv files.
 
-<br> Create the main table.
+<br>Create the main table.
 ```
-create table countries (
+CREATE TABLE countries (
 	city varchar(255),
 	states varchar(255),
     country varchar(255),
@@ -32,190 +32,213 @@ create table countries (
     taxes double);
 ```
 ```
-alter table countryforfreelanceremote.countries
-add column a varchar(255) FIRST;
+ALTER TABLE countryforfreelanceremote.countries
+ADD COLUMN a varchar(255) FIRST;
 ```
 
 <br> Insert city/state/country, cost of living index and rent index to main table.
 ```
-insert into countryforfreelanceremote.countries (a, cost_of_living, cost_of_rent)
-select `City`, `Cost of Living Index`, `Rent Index`
-from countryforfreelanceremote.costs
+INSERT INTO countryforfreelanceremote.countries (a, cost_of_living, cost_of_rent)
+SELECT `City`, `Cost of Living Index`, `Rent Index`
+FROM countryforfreelanceremote.costs
 ```
 
 <br>Update healthcareindex of the main table on city.
 ```
-update 
+UPDATE 
 	countryforfreelanceremote.countries as c
-inner join
+INNER JOIN
 	countryforfreelanceremote.healthcare as h
-on c.a = h.city
-set
+ON c.a = h.city
+SET
 	c.health_care_index = h.`health care index`;
 ```
 
 <br>Update pollutionindex of the main table on city.
 ```
-update 
+UPDATE 
 	countryforfreelanceremote.countries as c
-inner join
+INNER JOIN
 	countryforfreelanceremote.pollution as p
-on c.a = p.City
-set
+ON c.a = p.City
+SET
 	c.pollution_index = p.`Pollution Index`;
 ```
 
 <br>Update safetyindex of the main table on city.
 ```
-update 
+UPDATE 
 	countryforfreelanceremote.countries as c
-inner join
+INNER JOIN
 	countryforfreelanceremote.safety as s
-on c.a = s.City
-set
+ON c.a = s.City
+SET
 	c.safety_index = s.`Safety Index`;
 ```
 
 <br>Split a(city/states/country) to city, states, country columns.
 ```
-update 
+UPDATE 
 	countryforfreelanceremote.countries
-set
+SET
 	city = (
-    select
-		substring_index(`a`,',',1));
+    SELECT
+		SUBSTRING_INDEX(`a`,',',1));
 
-update 
+UPDATE 
 	countryforfreelanceremote.countries
-set
+SET
 	country = (
-    select
-		substring_index(`a`,',',-1));
-```
+    SELECT
+		SUBSTRING_INDEX(`a`,',',-1));
+    ```
 
 <br>Prepare states.
-update
+```
+UPDATE
 	countryforfreelanceremote.countries
-set states = replace(`a`,`city`,"");
+SET states = REPLACE(`a`,`city`,"");
 
-update
+UPDATE
 	countryforfreelanceremote.countries
-set a = replace(`states`,`country`,"");
+SET a = REPLACE(`states`,`country`,"");
 
-update
+UPDATE
 	countryforfreelanceremote.countries
-set states = replace(`a`,',',"");
+SET states = REPLACE(`a`,',',"");
+    ```
 
 <br>Trim them all.
-update
+```
+UPDATE
 	countryforfreelanceremote.countries
-set city = trim(`city`), states = trim(`states`), country = trim(`country`);
+SET
+    city = TRIM(`city`), 
+    states = TRIM(`states`), 
+    country = TRIM(`country`);
+    ```
 
 <br>Drop a.
-alter table countryforfreelanceremote.countries
-drop column a;
+```
+ALTER TABLE countryforfreelanceremote.countries
+DROP COLUMN a;
+```
 
 <br>Update internet_mbps of the main table on city.
-update countryforfreelanceremote.internet
-set Country = 'Hong Kong'
-where Country = 'Hong Kong (SAR) '
+```
+UPDATE countryforfreelanceremote.internet
+SET Country = 'Hong Kong'
+WHERE Country = 'Hong Kong (SAR) '
 
-update countryforfreelanceremote.internet
-set Country = 'Macao'
-where Country = 'Macau (SAR) '
+UPDATE countryforfreelanceremote.internet
+SET Country = 'Macao'
+WHERE Country = 'Macau (SAR) '
 
-update countryforfreelanceremote.internet
-set Country = trim(Country)
+UPDATE countryforfreelanceremote.internet
+SET Country = TRIM(Country)
 
-update countryforfreelanceremote.countries
-set country = 'Hong Kong'
-where country = 'Hong Kong (China)'
+UPDATE countryforfreelanceremote.countries
+SET country = 'Hong Kong'
+WHERE country = 'Hong Kong (China)'
 
-update countryforfreelanceremote.countries
-set country = 'Macao'
-where country = 'Macao (China)';
+UPDATE countryforfreelanceremote.countries
+SET country = 'Macao'
+WHERE country = 'Macao (China)';
 
-update countryforfreelanceremote.countries
-set country = 'Kosovo'
-where country = 'Kosovo (Disputed Territory)';
+UPDATE countryforfreelanceremote.countries
+SET country = 'Kosovo'
+WHERE country = 'Kosovo (Disputed Territory)';
 
-update 
+UPDATE 
 	countryforfreelanceremote.countries as c
-inner join
+INNER JOIN
 	countryforfreelanceremote.internet as i
-on c.country = i.Country
-set
+ON c.country = i.Country
+SET
 	c.internet_mbps = i.`Mbps`;
+    ```
 
 <br>Update taxes of the main table on city.
-update countryforfreelanceremote.taxes
-set Country = trim(Country);
+```
+UPDATE countryforfreelanceremote.taxes
+SET Country = TRIM(Country);
 
-alter table countryforfreelanceremote.countries
-add column personal_income_taxes double;
+ALTER TABLE countryforfreelanceremote.countries
+ADD COLUMN personal_income_taxes double;
 
-update countryforfreelanceremote.taxes
-set `Income Tax` = replace(`Income Tax`,'%','');
+UPDATE countryforfreelanceremote.taxes
+SET `Income Tax` = REPLACE(`Income Tax`,'%','');
 
-update countryforfreelanceremote.taxes
-set `Sales Tax` = replace(`Sales Tax`,'%','');
+UPDATE countryforfreelanceremote.taxes
+SET `Sales Tax` = REPLACE(`Sales Tax`,'%','');
 
-update countryforfreelanceremote.taxes
-set `Corporate Tax` = replace(`Corporate Tax`,'%','');
+UPDATE countryforfreelanceremote.taxes
+SET `Corporate Tax` = REPLACE(`Corporate Tax`,'%','');
 
-update countryforfreelanceremote.taxes
-set `Corporate Tax` = trim(`Corporate Tax`), `Sales Tax` = trim(`Sales Tax`), `Income Tax` = trim(`Income Tax`);
+UPDATE countryforfreelanceremote.taxes
+SET 
+    `Corporate Tax` = TRIM(`Corporate Tax`), 
+    `Sales Tax` = TRIM(`Sales Tax`), 
+    `Income Tax` = TRIM(`Income Tax`);
 
-update 
+UPDATE 
 	countryforfreelanceremote.countries as c
-inner join
+INNER JOIN
 	countryforfreelanceremote.taxes as t
-on c.country = t.Country
-set
+ON c.country = t.Country
+SET
 	c.personal_income_taxes = t.`Income Tax`;
 
-alter table countryforfreelanceremote.countries
-add column sales_taxes double;
+ALTER TABLE countryforfreelanceremote.countries
+ADD COLUMN sales_taxes double;
 
-alter table countryforfreelanceremote.countries
-add column corporate_taxes double;
+ALTER TABLE countryforfreelanceremote.countries
+ADD COLUMN corporate_taxes double;
 
-update 
+UPDATE 
 	countryforfreelanceremote.countries as c
-inner join
+INNER JOIN
 	countryforfreelanceremote.taxes as t
-on c.country = t.Country
-set
+ON c.country = t.Country
+SET
 	c.sales_taxes = t.`Sales Tax`;
 
-update 
+UPDATE 
 	countryforfreelanceremote.countries as c
-inner join
+INNER JOIN
 	countryforfreelanceremote.taxes as t
-on c.country = t.Country
-set
+ON c.country = t.Country
+SET
 	c.corporate_taxes = t.`Corporate Tax`;
+    ```
 
 <br>Dropped tables.
 
 <br>Delete rows with missing data.
+```
+DELETE FROM countryforfreelanceremote.countries
+WHERE 
+    `health_care_index` IS Null 
+    OR internet_mbps IS Null 
+    OR pollution_index IS Null 
+    OR safety_index IS Null 
+    OR personal_income_taxes IS Null;
 
-delete from countryforfreelanceremote.countries
-where `health_care_index` is Null or internet_mbps is Null or pollution_index is Null or safety_index is Null or personal_income_taxes is Null;
-
-alter table countryforfreelanceremote.countries
-drop column taxes;
+ALTER TABLE countryforfreelanceremote.countries
+DROP COLUMN taxes;
+    ```
 
 # Finding More Data
-<br>Collected more data.
+Collected more data.
 <br>Saved as a csv file.
-# Preparing Data with MySQL
 
-<br>Imported csv files.
+# Preparing Data with MySQL
+Imported csv files.
 
 <br>Create new fields on main table.
-alter table countryforfreelanceremote.countries
-add column(
+```
+ALTER TABLE countryforfreelanceremote.countries
+ADD COLUMN(
 	corruption double,
 	economic_complexity double,
     democracy double,
@@ -234,283 +257,324 @@ add column(
     pisa double,
     public_social_exp_as_gdp double
     );
+    ```
 
 <br>Update corruption of the main table on country.
-update countryforfreelanceremote.corruption
-set Country = trim(Country)
+```
+UPDATE countryforfreelanceremote.corruption
+SET Country = TRIM(Country)
 
-update countryforfreelanceremote.countries as c
-inner join countryforfreelanceremote.corruption as cr
-on c.country = cr.Country
-set c.corruption = cr.corruption
+UPDATE countryforfreelanceremote.countries as c
+INNER JOIN countryforfreelanceremote.corruption as cr
+ON c.country = cr.Country
+SET c.corruption = cr.corruption
+    ```
 
 <br>Update economic_complexty of the main table on country.
-update `countryforfreelanceremote`.`country complexity rankings 2021`
-set `ï»¿Country` = trim(`ï»¿Country`)
+```
+UPDATE `countryforfreelanceremote`.`country complexity rankings 2021`
+SET `ï»¿Country` = TRIM(`ï»¿Country`)
 
-update `countryforfreelanceremote`.`country complexity rankings 2021`
-set `ï»¿Country` = 'United States'
-where `ï»¿Country` = 'United States of America';
+UPDATE `countryforfreelanceremote`.`country complexity rankings 2021`
+SET `ï»¿Country` = 'United States'
+WHERE `ï»¿Country` = 'United States of America';
 
-update `countryforfreelanceremote`.`country complexity rankings 2021`
-set `ï»¿Country` = 'Turkey'
+UPDATE `countryforfreelanceremote`.`country complexity rankings 2021`
+SET `ï»¿Country` = 'Turkey'
 where `ï»¿Country` = 'Turkiye';
 
-update countryforfreelanceremote.countries as c
-inner join countryforfreelanceremote.`country complexity rankings 2021` as ec
-on c.country = ec.`ï»¿Country`
-set c.economic_complexity = ec.ECI
+UPDATE countryforfreelanceremote.countries as c
+INNER JOIN countryforfreelanceremote.`country complexity rankings 2021` as ec
+ON c.country = ec.`ï»¿Country`
+SET c.economic_complexity = ec.ECI
+    ```
 
 <br>Update democracy and liberal_democracy fields of the main table on country.
-update `countryforfreelanceremote`.`democracy`
-set `MyUnknownColumn` = trim(`MyUnknownColumn`)
+```
+UPDATE `countryforfreelanceremote`.`democracy`
+SET `MyUnknownColumn` = TRIM(`MyUnknownColumn`)
 
-update `countryforfreelanceremote`.`democracy`
-set `MyUnknownColumn` = 'United States'
-where `MyUnknownColumn` = 'United States of America';
+UPDATE `countryforfreelanceremote`.`democracy`
+SET `MyUnknownColumn` = 'United States'
+WHERE `MyUnknownColumn` = 'United States of America';
 
-update countryforfreelanceremote.countries as c
-inner join countryforfreelanceremote.`democracy` as d
-on c.country = d.`MyUnknownColumn`
-set c.democracy = d.democracy;
+UPDATE countryforfreelanceremote.countries as c
+INNER JOIN countryforfreelanceremote.`democracy` as d
+ON c.country = d.`MyUnknownColumn`
+SET c.democracy = d.democracy;
 
-update countryforfreelanceremote.countries as c
-inner join countryforfreelanceremote.`democracy` as d
-on c.country = d.`MyUnknownColumn`
-set c.liberal_democracy = d.`liberal democracy`;
+UPDATE countryforfreelanceremote.countries as c
+INNER JOIN countryforfreelanceremote.`democracy` as d
+ON c.country = d.`MyUnknownColumn`
+SET c.liberal_democracy = d.`liberal democracy`;
+    ```
 
 <br>Update entrepreneurship related fields of main table on country
-update countryforfreelanceremote.entrepreneurship
-set `MyUnknownColumn` = trim(`MyUnknownColumn`)
+```
+UPDATE countryforfreelanceremote.entrepreneurship
+SET `MyUnknownColumn` = TRIM(`MyUnknownColumn`)
 
-update countryforfreelanceremote.countries as c
-inner join countryforfreelanceremote.entrepreneurship as e
-on c.country = e.MyUnknownColumn
-set c.innovation = e.`innovation`;
+UPDATE countryforfreelanceremote.countries as c
+INNER JOIN countryforfreelanceremote.entrepreneurship as e
+ON c.country = e.MyUnknownColumn
+SET c.innovation = e.`innovation`;
 
-update countryforfreelanceremote.countries as c
-inner join countryforfreelanceremote.entrepreneurship as e
-on c.country = e.MyUnknownColumn
-set c.competitiveness = e.`competitiveness`;
+UPDATE countryforfreelanceremote.countries as c
+INNER JOIN countryforfreelanceremote.entrepreneurship as e
+ON c.country = e.MyUnknownColumn
+SET c.competitiveness = e.`competitiveness`;
 
-update countryforfreelanceremote.countries as c
-inner join countryforfreelanceremote.entrepreneurship as e
-on c.country = e.MyUnknownColumn
-set c.labour_skills = e.`labour skills`;
+UPDATE countryforfreelanceremote.countries as c
+INNER JOIN countryforfreelanceremote.entrepreneurship as e
+ON c.country = e.MyUnknownColumn
+SET c.labour_skills = e.`labour skills`;
 
-update countryforfreelanceremote.countries as c
-inner join countryforfreelanceremote.entrepreneurship as e
-on c.country = e.MyUnknownColumn
-set c.infrastructure = e.`infrastructure`;
+UPDATE countryforfreelanceremote.countries as c
+INNER JOIN countryforfreelanceremote.entrepreneurship as e
+ON c.country = e.MyUnknownColumn
+SET c.infrastructure = e.`infrastructure`;
 
-update countryforfreelanceremote.countries as c
-inner join countryforfreelanceremote.entrepreneurship as e
-on c.country = e.MyUnknownColumn
-set c.access_to_capital = e.`access to capital`;
+UPDATE countryforfreelanceremote.countries as c
+INNER JOIN countryforfreelanceremote.entrepreneurship as e
+ON c.country = e.MyUnknownColumn
+SET c.access_to_capital = e.`access to capital`;
 
-update countryforfreelanceremote.countries as c
-inner join countryforfreelanceremote.entrepreneurship as e
-on c.country = e.MyUnknownColumn
-set c.openness_for_business = e.`openness for business`;
+UPDATE countryforfreelanceremote.countries as c
+INNER JOIN countryforfreelanceremote.entrepreneurship as e
+ON c.country = e.MyUnknownColumn
+SET c.openness_for_business = e.`openness for business`;
+    ```
 
 <br>Update gdp_per_capita of main table on country.
-update countryforfreelanceremote.gdp_per_capita
-set `country` = trim(`country`)
+```
+UPDATE countryforfreelanceremote.gdp_per_capita
+SET `country` = TRIM(`country`)
 
-update countryforfreelanceremote.gdp_per_capita
-set gdp_per_capita = replace(gdp_per_capita,'$','')
+UPDATE countryforfreelanceremote.gdp_per_capita
+SET gdp_per_capita = REPLACE(gdp_per_capita,'$','')
 
-update countryforfreelanceremote.gdp_per_capita
-set gdp_per_capita = trim(gdp_per_capita)
+UPDATE countryforfreelanceremote.gdp_per_capita
+SET gdp_per_capita = TRIM(gdp_per_capita)
 
-update countryforfreelanceremote.gdp_per_capita
-set gdp_per_capita = replace(gdp_per_capita,',','')
+UPDATE countryforfreelanceremote.gdp_per_capita
+SET gdp_per_capita = REPLACE(gdp_per_capita,',','')
 
-alter table countryforfreelanceremote.gdp_per_capita
-modify column gdp_per_capita double
+ALTER TABLE countryforfreelanceremote.gdp_per_capita
+MODIFY COLUMN gdp_per_capita double
 
-update countryforfreelanceremote.countries as c
-inner join countryforfreelanceremote.gdp_per_capita as g
-on c.country = g.country
-set c.gdp_per_capita = g.`gdp_per_capita`;
+UPDATE countryforfreelanceremote.countries as c
+INNER JOIN countryforfreelanceremote.gdp_per_capita as g
+ON c.country = g.country
+SET c.gdp_per_capita = g.`gdp_per_capita`;
+    ```
 
 <br>Update entrepreneurship related fields of main table on country
-update countryforfreelanceremote.gender_inequality
-set `country` = trim(`country`)
+```
+UPDATE countryforfreelanceremote.gender_inequality
+SET `country` = TRIM(`country`)
 
-update countryforfreelanceremote.countries as c
-inner join countryforfreelanceremote.gender_inequality as g
-on c.country = g.country
-set c.gender_inequality = g.`gii`;
+UPDATE countryforfreelanceremote.countries as c
+INNER JOIN countryforfreelanceremote.gender_inequality as g
+ON c.country = g.country
+SET c.gender_inequality = g.`gii`;
+    ```
 
 <br>Update gini of main table on country.
-update countryforfreelanceremote.gini
-set `country` = trim(`country`)
+```
+UPDATE countryforfreelanceremote.gini
+SET `country` = TRIM(`country`)
 
-update countryforfreelanceremote.countries as c
-inner join countryforfreelanceremote.gini as g
-on c.country = g.country
-set c.gini = g.`gini`;
+UPDATE countryforfreelanceremote.countries as c
+INNER JOIN countryforfreelanceremote.gini as g
+ON c.country = g.country
+SET c.gini = g.`gini`;
+    ```
 
 <br>Update iq of main table on country.
-update countryforfreelanceremote.iq
-set `Country` = trim(`Country`)
+```
+UPDATE countryforfreelanceremote.iq
+SET `Country` = TRIM(`Country`)
 
-update countryforfreelanceremote.countries as c
-inner join countryforfreelanceremote.iq as g
-on c.country = g.country
-set c.iq = g.`IQ`;
+UPDATE countryforfreelanceremote.countries as c
+INNER JOIN countryforfreelanceremote.iq as g
+ON c.country = g.country
+SET c.iq = g.`IQ`;
+    ```
 
 <br>Update media of main table on country.
-update countryforfreelanceremote.media
-set `country` = trim(`country`)
+```
+UPDATE countryforfreelanceremote.media
+SET `country` = TRIM(`country`)
 
-update countryforfreelanceremote.countries as c
-inner join countryforfreelanceremote.media as g
-on c.country = g.country
-set c.press_freedom = g.`press`;
+UPDATE countryforfreelanceremote.countries as c
+INNER JOIN countryforfreelanceremote.media as g
+ON c.country = g.country
+SET c.press_freedom = g.`press`;
+    ```
 
 <br>Update pisa of main table on country.
+```
+UPDATE countryforfreelanceremote.pisa
+SET `Country` = TRIM(`Country`)
 
-update countryforfreelanceremote.pisa
-set `Country` = trim(`Country`)
-
-update countryforfreelanceremote.countries as c
-inner join countryforfreelanceremote.pisa as g
-on c.country = g.country
-set c.pisa = g.`PISA`;
+UPDATE countryforfreelanceremote.countries as c
+INNER JOIN countryforfreelanceremote.pisa as g
+ON c.country = g.country
+SET c.pisa = g.`PISA`;
+    ```
 
 <br>Update social_exp_gdp of main table on country.
-update countryforfreelanceremote.social_exp
-set `Country` = trim(`Country`)
+```
+UPDATE countryforfreelanceremote.social_exp
+SET `Country` = TRIM(`Country`)
 
-update countryforfreelanceremote.countries as c
-inner join countryforfreelanceremote.social_exp as g
-on c.country = g.country
-set c.public_social_exp_as_gdp = g.`public_social_expenditure_as_gdp`;
+UPDATE countryforfreelanceremote.countries as c
+INNER JOIN countryforfreelanceremote.social_exp as g
+ON c.country = g.country
+SET c.public_social_exp_as_gdp = g.`public_social_expenditure_as_gdp`;
+    ```
 
 <br>Some corrections.
-update countryforfreelanceremote.countries
-set pisa = '483'
-where country = 'Spain'
+```
+UPDATE countryforfreelanceremote.countries
+SET pisa = '483'
+WHERE country = 'Spain'
 
-update countryforfreelanceremote.countries
-set pisa = '498'
-where country = 'Switzerland'
+UPDATE countryforfreelanceremote.countries
+SET pisa = '498'
+WHERE country = 'Switzerland'
 
-update countryforfreelanceremote.countries
-set press_freedom = '78.51'
-where country = 'United Kingdom'
+UPDATE countryforfreelanceremote.countries
+SET press_freedom = '78.51'
+WHERE country = 'United Kingdom'
 
-update countryforfreelanceremote.countries
-set press_freedom = '71.22'
-where country = 'United States'
+UPDATE countryforfreelanceremote.countries
+SET press_freedom = '71.22'
+WHERE country = 'United States'
+    ```
 
 # Collecting More Data
-<br>Collected innovation, competitiveness and human capital indexes.
+Collected innovation, competitiveness and human capital indexes.
 <br>Saved as csv files.
 
 # Preparing Data with MySQL
-<br>Imported csv files
+Imported csv files
 
-<br>Drop some columns
-alter table countryforfreelanceremote.countries
-drop column innovation, 
-drop column competitiveness, 
-drop column labour_skills, 
-drop column infrastructure, 
-drop column access_to_capital, 
-drop column openness_for_business;
+<br>Drop some columns.
+```
+ALTER TABLE countryforfreelanceremote.countries
+DROP COLUMN innovation, 
+DROP COLUMN competitiveness, 
+DROP COLUMN labour_skills, 
+DROP COLUMN infrastructure, 
+DROP COLUMN access_to_capital, 
+DROP COLUMN openness_for_business;
+    ```
 
 <br>Add columns.
-alter table countryforfreelanceremote.countries
-add column innovation double,
-add column`competitiveness` double,
-add column `human_capital` double;
+```
+ALTER TABLE countryforfreelanceremote.countries
+ADD COLUMN innovation double,
+ADD COLUMN`competitiveness` double,
+ADD COLUMN `human_capital` double;
+    ```
 
 <br>Update competitiveness of main table on country.
+```
+UPDATE countryforfreelanceremote.competitiveness
+SET `country` = TRIM(`country`);
 
-update countryforfreelanceremote.competitiveness
-set `country` = trim(`country`);
+UPDATE countryforfreelanceremote.competitiveness
+SET `country` = 'United States'
+WHERE `country` = 'USA'
 
-update countryforfreelanceremote.competitiveness
-set `country` = 'United States'
-where `country` = 'USA'
-
-update countryforfreelanceremote.countries as c
-inner join countryforfreelanceremote.competitiveness as g
-on c.country = g.country
-set c.competitiveness = g.`competitiveness`;
+UPDATE countryforfreelanceremote.countries as c
+INNER JOIN countryforfreelanceremote.competitiveness as g
+ON c.country = g.country
+SET c.competitiveness = g.`competitiveness`;
+    ```
 
 <br>Update innovation of main table on country.
+```
+UPDATE countryforfreelanceremote.innovation
+SET `country` = TRIM(`country`);
 
-update countryforfreelanceremote.innovation
-set `country` = trim(`country`);
+UPDATE countryforfreelanceremote.innovation
+SET `country` = 'United States'
+WHERE `country` = 'USA'
 
-update countryforfreelanceremote.innovation
-set `country` = 'United States'
-where `country` = 'USA'
-
-update countryforfreelanceremote.countries as c
-inner join countryforfreelanceremote.innovation as g
-on c.country = g.country
-set c.innovation = g.`innovation`;
+UPDATE countryforfreelanceremote.countries as c
+INNER JOIN countryforfreelanceremote.innovation as g
+ON c.country = g.country
+SET c.innovation = g.`innovation`;
+    ```
 
 <br>Update human_capital of main table on country.
-update countryforfreelanceremote.human_capital
-set `country` = trim(`country`);
+```
+UPDATE countryforfreelanceremote.human_capital
+SET `country` = TRIM(`country`);
 
-update countryforfreelanceremote.human_capital
-set `country` = substring(`country`,2);
+UPDATE countryforfreelanceremote.human_capital
+SET `country` = SUBSTRING(`country`,2);
 
-update countryforfreelanceremote.countries as c
-inner join countryforfreelanceremote.human_capital as g
-on c.country = g.country
-set c.human_capital = g.`potential_reached`;
+UPDATE countryforfreelanceremote.countries as c
+INNER JOIN countryforfreelanceremote.human_capital as g
+ON c.country = g.country
+SET c.human_capital = g.`potential_reached`;
+    ```
 
 <br>Drop tables.
 
 <br>Small fixes.
-update countryforfreelanceremote.countries
-set innovation = '59.7'
-where country = 'United Kingdom'
+```
+UPDATE countryforfreelanceremote.countries
+SET innovation = '59.7'
+WHERE country = 'United Kingdom'
+    ```
 
 <br>gini*gpd_per_capita.
-alter table countryforfreelanceremote.countries
-add column giniXgdp_per_capita double
+```
+ALTER TABLE countryforfreelanceremote.countries
+ADD COLUMN giniXgdp_per_capita double
 
-update countryforfreelanceremote.countries
-set giniXgdp_per_capita = `public_social_exp_as_gdp` / `gini`
+UPDATE countryforfreelanceremote.countries
+SET giniXgdp_per_capita = `public_social_exp_as_gdp` / `gini`
+    ```
 
 <br>Exported data before deleting null rows(some countries will be deleted).
 
 <br>Delete null rows.
-delete from countryforfreelanceremote.countries
-where 
-    corruption is null or 
-    economic_complexity is null or  
-    democracy is null or  
-    liberal_democracy is null or  
-    gdp_per_capita is null or 
-    gender_inequality is null or 
-    gini is null or 
-    iq is null or 
-    press_freedom is null or 
-    pisa is null or  
-    public_social_exp_as_gdp is null or 
-    innovation is null or 
-    competitiveness is null or 
-    human_capital is null or 
-    giniXgdp_per_capita is null;
+```
+DELETE FROM countryforfreelanceremote.countries
+WHERE 
+    corruption IS null OR 
+    economic_complexity IS null OR  
+    democracy IS null OR  
+    liberal_democracy IS null OR  
+    gdp_per_capita IS null OR 
+    gender_inequality IS null OR 
+    gini IS null OR 
+    iq IS null OR 
+    press_freedom IS null OR 
+    pISa IS null OR  
+    public_social_exp_as_gdp IS null OR 
+    innovation IS null OR 
+    competitiveness IS null OR 
+    human_capital IS null OR 
+    giniXgdp_per_capita IS null;
+    ```
 
 # Web Scraping
-<br>Create scrapyproject.
+Create scrapyproject.
+```
 scrapy startproject citiestolive
 scrapy genspider citiespider https://www.numbeo.com/cost-of-living/
+    ```
 
 <br>Added ipython shell to scrapy.cfg
 
 <br>Spider.
+```
 import scrapy
 import csv
 
@@ -550,9 +614,10 @@ class CitiespiderSpider(scrapy.Spider):
         writer.writerow([city_name, country_name, cost_of_living, safety, health_care, pollution])
         
         file.close()
+    ```
 
 # Data Analysis With Excel
-<br>Added scraped new cities to main data.
+Added scraped new cities to main data.
 
--- result
+# Results
 Cities from Finland, Denmark, Norway, Sweden, Netherlands, Switzerland and Germany are candidates.
