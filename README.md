@@ -612,8 +612,27 @@ class CitiespiderSpider(scrapy.Spider):
         file.close()
 ```
 
+# Preparing Analysis File with Excel
+Exported data from MySQL.
+<br>Added to the analysis file.
+<br>Text to columns.
+<br>Added scraped new cities to the analysis file.
+<br> Some cleaning with excel.
+```
+Replace all "[' Quality of Life in " with ""
+Replace all "']" with ""
+Text to columns
+=TRIM(D1)
+=IF(LEN(C1)<3,C1,"")    to separate states from countries    
+Added headers
+```
+Added to main table.
+Freeze Panes
+
 # Data Analysis With Excel
-Added scraped new cities to the main data.
+Calculated benefits with by multiplying 0 to 100 ones and by dividing 100 to 0 ones.
+Summed costs and taxes.
+Calculated Benefits/costs and taxes
 
 # Results
-Cities from Finland, Denmark, Norway, Sweden, Netherlands, Switzerland and Germany are candidates.
+Cities from Denmark, Finland will be analyzed in detail.
