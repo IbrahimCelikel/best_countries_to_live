@@ -1,12 +1,10 @@
-# Project Description
-Goal<br>
-    Provide candidate cities and countries to relocate.
-    (Final decision will be given after detailed research on the candidate list.)
-Personal preferences
-    Social states, not low-tax, high-risk return countries.
-    High IQ average, excellent education system.
-    Strong institutions and other general things(democracy, media, etc.).
-    Suitable for working remotely and entrepreneurs.
+# Project Description and Personal Preferences
+Provide candidate cities and countries to relocate.
+<br>Final decision will be given after researching candidate cities and countries in detail.
+<br>Social states, not low-tax, high-risk return countries.
+<br>High IQ average, excellent education system.
+<br>Strong institutions and other general things(democracy, media, etc.).
+<br>Suitable for working remotely and entrepreneurs.
 
 # Finding Data
 Required data was not ready in one place. Data is collected from various sources by copying and pasting to CSV files. Web scraping will be used later.
