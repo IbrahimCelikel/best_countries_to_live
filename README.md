@@ -626,13 +626,13 @@ Text to columns
 =IF(LEN(C1)<3,C1,"")    to separate states from countries    
 Added headers
 ```
-Added to main table.
-Freeze Panes
+<br>Added to main table.
+<br>Freeze Panes
 
 # Data Analysis With Excel
 Calculated benefits with by multiplying 0 to 100 ones and by dividing 100 to 0 ones.
-Summed costs and taxes.
-Calculated Benefits/costs and taxes
+<br>Summed costs and taxes.
+<br>Calculated Benefits/costs and taxes.
 
 # Results
 Cities from Denmark, Finland will be analyzed in detail.
