@@ -627,7 +627,7 @@ Text to columns
 Added headers
 ```
 <br>Added to main table.
-<br>Freeze Panes
+<br>Freeze Panes.
 
 # Data Analysis With Excel
 Calculated benefits with by multiplying 0 to 100 ones and by dividing 100 to 0 ones.
@@ -635,4 +635,4 @@ Calculated benefits with by multiplying 0 to 100 ones and by dividing 100 to 0 o
 <br>Calculated Benefits/costs and taxes.
 
 # Results
-Cities from Denmark, Finland will be analyzed in detail.
+Cities from Denmark and Finland will be analyzed in detail.
