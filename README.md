@@ -1,28 +1,20 @@
 # Project Description
 Goal
-	Provide candidate cities and countries to relocate
+    Provide candidate cities and countries to relocate.
+    (Final decision will be given after detailed research on the candidate list.)
 Personal preferences
-	Social state not low tax, high risk high return countries
-	High iq average, good education
-	Strong institutions and others general things(democracy, media, etc)
-	Suitable for working remote and entrepreneurs
+    Social states, not low-tax, high-risk return countries.
+    High IQ average, excellent education system.
+    Strong institutions and other general things(democracy, media, etc.).
+    Suitable for working remotely and entrepreneurs.
 
+# Finding Data
+Required data was not ready in one place. Data is collected from various sources by copying and pasting to CSV files. Web scraping will be used later.
 
-
-
-# data collection
-
---collected data from various sources, copy paste to excel
---saved as csv files
-
-
-
-
-# mysql data cleaning
-
+# Preparing Data-MySQL
 create database countryForFreelanceRemote
 
--- imported csv files
+----- Imported csv files
 
 create table countries (
 	city varchar(255),
@@ -39,12 +31,12 @@ create table countries (
 alter table countryforfreelanceremote.countries
 add column a varchar(255) FIRST;
 
---insert city/state/country, cost of living index and rent index to main table
+----- Insert city/state/country, cost of living index and rent index to main table
 insert into countryforfreelanceremote.countries (a, cost_of_living, cost_of_rent)
 select `City`, `Cost of Living Index`, `Rent Index`
 from countryforfreelanceremote.costs
 
--- update healthcareindex of the main table on city
+----- Update healthcareindex of the main table on city
 update 
 	countryforfreelanceremote.countries as c
 inner join
@@ -53,7 +45,7 @@ on c.a = h.city
 set
 	c.health_care_index = h.`health care index`;
 
--- update pollutionindex of the main table on city
+----- Update pollutionindex of the main table on city
 update 
 	countryforfreelanceremote.countries as c
 inner join
@@ -62,7 +54,7 @@ on c.a = p.City
 set
 	c.pollution_index = p.`Pollution Index`;
 
--- update safetyindex of the main table on city
+----- Update safetyindex of the main table on city
 update 
 	countryforfreelanceremote.countries as c
 inner join
@@ -71,7 +63,7 @@ on c.a = s.City
 set
 	c.safety_index = s.`Safety Index`;
 
--- split a(city/states/country) to city, states, country columns
+----- Split a(city/states/country) to city, states, country columns
 update 
 	countryforfreelanceremote.countries
 set
@@ -86,7 +78,7 @@ set
     select
 		substring_index(`a`,',',-1));
 
--- for states
+----- Prepare states
 update
 	countryforfreelanceremote.countries
 set states = replace(`a`,`city`,"");
@@ -99,16 +91,16 @@ update
 	countryforfreelanceremote.countries
 set states = replace(`a`,',',"");
 
--- trim
+----- Trim them
 update
 	countryforfreelanceremote.countries
 set city = trim(`city`), states = trim(`states`), country = trim(`country`);
 
--- drop a
+----- Drop a
 alter table countryforfreelanceremote.countries
 drop column a;
 
--- update internet_mbps of the main table on city
+----- Update internet_mbps of the main table on city
 update countryforfreelanceremote.internet
 set Country = 'Hong Kong'
 where Country = 'Hong Kong (SAR) '
@@ -140,7 +132,7 @@ on c.country = i.Country
 set
 	c.internet_mbps = i.`Mbps`;
 
--- update taxes of the main table on city
+----- Update taxes of the main table on city
 update countryforfreelanceremote.taxes
 set Country = trim(Country);
 
@@ -189,9 +181,9 @@ on c.country = t.Country
 set
 	c.corporate_taxes = t.`Corporate Tax`;
 
--- drop tables
+----- Dropped tables
 
--- delete rows with missing data
+----- Delete rows with missing data
 
 delete from countryforfreelanceremote.countries
 where `health_care_index` is Null or internet_mbps is Null or pollution_index is Null or safety_index is Null or personal_income_taxes is Null;
@@ -199,21 +191,14 @@ where `health_care_index` is Null or internet_mbps is Null or pollution_index is
 alter table countryforfreelanceremote.countries
 drop column taxes;
 
+# Finding More Data
+----- Collected more data
+----- Saved as a csv file
+# Preparing Data with MySQL
 
+----- Imported csv files
 
-
-# more data collection
--- collected more data
--- saved as csv file
-
-
-
-
-# data cleaning
-
---imported csvs
-
---create new fields on main table
+----- Create new fields on main table
 alter table countryforfreelanceremote.countries
 add column(
 	corruption double,
@@ -235,7 +220,7 @@ add column(
     public_social_exp_as_gdp double
     );
 
---update corruption of the main table on country
+----- Update corruption of the main table on country.
 update countryforfreelanceremote.corruption
 set Country = trim(Country)
 
@@ -244,7 +229,7 @@ inner join countryforfreelanceremote.corruption as cr
 on c.country = cr.Country
 set c.corruption = cr.corruption
 
---update economic_complexty of the main table on country
+----- Update economic_complexty of the main table on country.
 update `countryforfreelanceremote`.`country complexity rankings 2021`
 set `ï»¿Country` = trim(`ï»¿Country`)
 
@@ -261,7 +246,7 @@ inner join countryforfreelanceremote.`country complexity rankings 2021` as ec
 on c.country = ec.`ï»¿Country`
 set c.economic_complexity = ec.ECI
 
---update democracy and liberal_democracy fields of the main table on country
+----- Update democracy and liberal_democracy fields of the main table on country.
 update `countryforfreelanceremote`.`democracy`
 set `MyUnknownColumn` = trim(`MyUnknownColumn`)
 
@@ -279,7 +264,7 @@ inner join countryforfreelanceremote.`democracy` as d
 on c.country = d.`MyUnknownColumn`
 set c.liberal_democracy = d.`liberal democracy`;
 
---update entrepreneurship related fields of main table on country
+----- Update entrepreneurship related fields of main table on country
 update countryforfreelanceremote.entrepreneurship
 set `MyUnknownColumn` = trim(`MyUnknownColumn`)
 
@@ -313,7 +298,7 @@ inner join countryforfreelanceremote.entrepreneurship as e
 on c.country = e.MyUnknownColumn
 set c.openness_for_business = e.`openness for business`;
 
---update gdp_per_capita of main table on country
+----- Update gdp_per_capita of main table on country.
 update countryforfreelanceremote.gdp_per_capita
 set `country` = trim(`country`)
 
@@ -334,7 +319,7 @@ inner join countryforfreelanceremote.gdp_per_capita as g
 on c.country = g.country
 set c.gdp_per_capita = g.`gdp_per_capita`;
 
---update entrepreneurship related fields of main table on country
+----- Update entrepreneurship related fields of main table on country
 update countryforfreelanceremote.gender_inequality
 set `country` = trim(`country`)
 
@@ -343,7 +328,7 @@ inner join countryforfreelanceremote.gender_inequality as g
 on c.country = g.country
 set c.gender_inequality = g.`gii`;
 
---update gini of main table on country
+----- Update gini of main table on country.
 update countryforfreelanceremote.gini
 set `country` = trim(`country`)
 
@@ -352,7 +337,7 @@ inner join countryforfreelanceremote.gini as g
 on c.country = g.country
 set c.gini = g.`gini`;
 
---update iq of main table on country
+----- Update iq of main table on country.
 update countryforfreelanceremote.iq
 set `Country` = trim(`Country`)
 
@@ -361,7 +346,7 @@ inner join countryforfreelanceremote.iq as g
 on c.country = g.country
 set c.iq = g.`IQ`;
 
---update media of main table on country
+----- Update media of main table on country.
 update countryforfreelanceremote.media
 set `country` = trim(`country`)
 
@@ -370,7 +355,7 @@ inner join countryforfreelanceremote.media as g
 on c.country = g.country
 set c.press_freedom = g.`press`;
 
---update pisa of main table on country
+----- Update pisa of main table on country.
 
 update countryforfreelanceremote.pisa
 set `Country` = trim(`Country`)
@@ -380,7 +365,7 @@ inner join countryforfreelanceremote.pisa as g
 on c.country = g.country
 set c.pisa = g.`PISA`;
 
---update social_exp_gdp of main table on country
+----- Update social_exp_gdp of main table on country.
 update countryforfreelanceremote.social_exp
 set `Country` = trim(`Country`)
 
@@ -389,7 +374,7 @@ inner join countryforfreelanceremote.social_exp as g
 on c.country = g.country
 set c.public_social_exp_as_gdp = g.`public_social_expenditure_as_gdp`;
 
--- some corrections
+----- Some corrections.
 update countryforfreelanceremote.countries
 set pisa = '483'
 where country = 'Spain'
@@ -406,20 +391,14 @@ update countryforfreelanceremote.countries
 set press_freedom = '71.22'
 where country = 'United States'
 
+# Collecting More Data
+----- Collected innovation, competitiveness and human capital indexes.
+----- Saved as csv files.
 
+# Preparing Data with MySQL
+----- Imported csv files
 
-
-# collect data
--- collect innovation, competitiveness and human capital indexes
--- save as csvs
-
-
-
-
-# clean data
---import csvs
-
--- drop some columns
+----- Drop some columns
 alter table countryforfreelanceremote.countries
 drop column innovation, 
 drop column competitiveness, 
@@ -428,13 +407,13 @@ drop column infrastructure,
 drop column access_to_capital, 
 drop column openness_for_business;
 
---add columns
+----- Add columns.
 alter table countryforfreelanceremote.countries
 add column innovation double,
 add column`competitiveness` double,
 add column `human_capital` double;
 
---update competitiveness of main table on country
+----- Update competitiveness of main table on country.
 
 update countryforfreelanceremote.competitiveness
 set `country` = trim(`country`);
@@ -448,7 +427,7 @@ inner join countryforfreelanceremote.competitiveness as g
 on c.country = g.country
 set c.competitiveness = g.`competitiveness`;
 
---update innovation of main table on country
+----- Update innovation of main table on country.
 
 update countryforfreelanceremote.innovation
 set `country` = trim(`country`);
@@ -462,7 +441,7 @@ inner join countryforfreelanceremote.innovation as g
 on c.country = g.country
 set c.innovation = g.`innovation`;
 
---update human_capital of main table on country
+----- Update human_capital of main table on country.
 update countryforfreelanceremote.human_capital
 set `country` = trim(`country`);
 
@@ -474,23 +453,23 @@ inner join countryforfreelanceremote.human_capital as g
 on c.country = g.country
 set c.human_capital = g.`potential_reached`;
 
---drop tables
+----- Drop tables.
 
--- small fixes
+----- Small fixes.
 update countryforfreelanceremote.countries
 set innovation = '59.7'
 where country = 'United Kingdom'
 
--- gini*gpd_per_capita
+----- gini*gpd_per_capita.
 alter table countryforfreelanceremote.countries
 add column giniXgdp_per_capita double
 
 update countryforfreelanceremote.countries
 set giniXgdp_per_capita = `public_social_exp_as_gdp` / `gini`
 
--- import data before deleting null rows(some countries will be deleted)
+----- Exported data before deleting null rows(some countries will be deleted).
 
--- delete null rows
+----- Delete null rows.
 delete from countryforfreelanceremote.countries
 where 
     corruption is null or 
@@ -509,33 +488,14 @@ where
     human_capital is null or 
     giniXgdp_per_capita is null;
 
-
-
-
-# data analysis
--- csv to columns and xlsx
-
--- re arranged values(best = 100)
-
--- calculated averages of benefifts
-
--- for best countries added more cities
-
--- calculated averages of costs and taxes
-
--- calculated pros/cons
-
-
-
-
-# web scraping
---created scrapyproject
+# Web Scraping
+----- Create scrapyproject.
 scrapy startproject citiestolive
 scrapy genspider citiespider https://www.numbeo.com/cost-of-living/
 
--- added ipython shell to scrapy.cfg
+----- Added ipython shell to scrapy.cfg
 
---spider
+----- Spider
 import scrapy
 import csv
 
@@ -576,11 +536,8 @@ class CitiespiderSpider(scrapy.Spider):
         
         file.close()
 
+# Data Analysis With Excel
+----- Added scraped new cities to main data
 
-
-
-# Final
--- added new cities
--- changed formulas
 -- result
 Cities from Finland, Denmark, Norway, Sweden, Netherlands, Switzerland and Germany are candidates.
