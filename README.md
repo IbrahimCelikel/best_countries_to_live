@@ -15,7 +15,7 @@ Create a database.
 CREATE DATABASE countryForFreelanceRemote
 ```
 
-<br>Imported csv files.
+<br>Imported CSV files.
 
 <br>Create the main table.
 ```
@@ -226,10 +226,10 @@ DROP COLUMN taxes;
 
 # Finding More Data
 Collected more data.
-<br>Saved as a csv file.
+<br>Saved as CSV file.
 
 # Preparing Data with MySQL
-Imported csv files.
+Imported CSV files.
 
 <br>Create new fields on main table.
 ```
@@ -305,7 +305,7 @@ ON c.country = d.`MyUnknownColumn`
 SET c.liberal_democracy = d.`liberal democracy`;
 ```
 
-<br>Update entrepreneurship related fields of main table on country
+<br>Update entrepreneurship related fields of main table on country.
 ```
 UPDATE countryforfreelanceremote.entrepreneurship
 SET `MyUnknownColumn` = TRIM(`MyUnknownColumn`)
@@ -364,7 +364,7 @@ ON c.country = g.country
 SET c.gdp_per_capita = g.`gdp_per_capita`;
 ```
 
-<br>Update entrepreneurship related fields of main table on country
+<br>Update entrepreneurship related fields of main table on country.
 ```
 UPDATE countryforfreelanceremote.gender_inequality
 SET `country` = TRIM(`country`)
@@ -451,10 +451,10 @@ WHERE country = 'United States'
 
 # Collecting More Data
 Collected innovation, competitiveness and human capital indexes.
-<br>Saved as csv files.
+<br>Saved as CSV files.
 
 # Preparing Data with MySQL
-Imported csv files
+Imported CSV files.
 
 <br>Drop some columns.
 ```
@@ -613,7 +613,7 @@ class CitiespiderSpider(scrapy.Spider):
 ```
 
 # Data Analysis With Excel
-Added scraped new cities to main data.
+Added scraped new cities to the main data.
 
 # Results
 Cities from Finland, Denmark, Norway, Sweden, Netherlands, Switzerland and Germany are candidates.
