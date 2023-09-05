@@ -626,7 +626,7 @@ Text to columns
 =IF(LEN(C1)<3,C1,"")    to separate states from countries    
 Added headers
 ```
-<br>Added to main table.
+Added to main table.
 <br>Freeze Panes.
 
 # Data Analysis With Excel
