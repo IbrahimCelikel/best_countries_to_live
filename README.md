@@ -10,12 +10,12 @@ Provide candidate cities and countries to relocate.
 Required data was not ready in one place. Data is collected from various sources by copying and pasting to CSV files. Web scraping will be used later.
 
 # Preparing Data With MySQL
-'''
+''''
 create database countryForFreelanceRemote
-'''
+''''
 
 <br>----- Imported csv files.
-'''
+''''
 create table countries (
 	city varchar(255),
 	states varchar(255),
@@ -27,11 +27,11 @@ create table countries (
     pollution_index double,
     safety_index double,
     taxes double);
-'''
-'''
+''''
+''''
 alter table countryforfreelanceremote.countries
 add column a varchar(255) FIRST;
-'''
+''''
 
 ----- Insert city/state/country, cost of living index and rent index to main table
 insert into countryforfreelanceremote.countries (a, cost_of_living, cost_of_rent)
