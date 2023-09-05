@@ -669,7 +669,7 @@ Calculated Cons by summing taxes and costs.
 <br>Rearranged them from 0 to 100
 
 # Visualization with Power BI
-Created Cards, slicers for cities and countries, one table with every column, and bar charts for pros, cons, and pros and cons.
+Created cards, slicers for cities and countries, one table with every column, and bar charts for pros, cons, and pros and cons.
 
 # Results
 Cities from Denmark, Finland, Sweden, Norway, Holland, Switzerland, and Germany will be analyzed in detail.
