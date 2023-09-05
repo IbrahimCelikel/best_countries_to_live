@@ -77,12 +77,14 @@ SET
 ```
 
 <br>Split a(city/states/country) to city, states, country columns.
-
+```
 UPDATE countryforfreelanceremote.countries
 SET city = (SELECT SUBSTRING_INDEX(`a`,',',1));
-
+```
+```
 UPDATE countryforfreelanceremote.countries
 SET country =(SELECT SUBSTRING_INDEX(`a`,',',-1));
+```
 
 <br>Prepare states.
 ```
@@ -98,7 +100,8 @@ SET a = REPLACE(`states`,`country`,"");
 UPDATE
 	countryforfreelanceremote.countries
 SET states = REPLACE(`a`,',',"");
-    ```
+
+```
 
 <br>Trim them all.
 ```
